@@ -1,0 +1,18 @@
+{
+  "name": "tbc-x-usaid-project-backend",
+  "version": "1.0.0",
+  "description": "Authentication API for tbc-x-usaid-project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dali Khukhunashvili",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "sqlite3": "^5.1.7"
+  }
+}
