@@ -53,4 +53,30 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.post('/change-password', (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+    db.query('SELECT * FROM credentials WHERE email = $1', [email], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+        if (result.rows.length === 0) {
+            return res.status(400).json({ message: 'Invalid email' });
+        }
+
+        const user = result.rows[0];
+        const passwordIsValid = bcrypt.compareSync(oldPassword, user.password);
+        if (!passwordIsValid) {
+            return res.status(400).json({ message: 'Invalid password' });
+        }
+
+        const hashedPassword = bcrypt.hashSync(newPassword, 8);
+        db.query('UPDATE credentials SET password = $1 WHERE email = $2', [hashedPassword, email], (err, result) => {
+            if (err) {
+                return res.status(500).json({ message: 'Internal server error' });
+            }
+            res.status(200).json({ message: 'Password changed successfully' });
+        });
+    });
+});
+
 module.exports = app;
